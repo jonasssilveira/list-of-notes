@@ -16,6 +16,7 @@ import com.silveira.ceep.model.Nota;
 public class FormCriacaoNota extends AppCompatActivity {
 
     public static final String TITLEBAR_CREATE_NOTA = "Insere nota";
+    public static final String NOTA_GERADA = "notaGerada";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +34,20 @@ public class FormCriacaoNota extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.salvar_nota) {
-            EditText titulo = findViewById(R.id.activity_form_criacao_nota_titulo);
-            EditText descricao = findViewById(R.id.activity_form_criacao_nota_descricao);
-
-            Nota nota = new Nota(titulo.getText().toString(), descricao.getText().toString());
+            Nota nota = getNota();
             Intent intent = new Intent();
-            intent.putExtra("notaGerada", nota);
+            intent.putExtra(NOTA_GERADA, nota);
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @NonNull
+    private Nota getNota() {
+        EditText titulo = findViewById(R.id.activity_form_criacao_nota_titulo);
+        EditText descricao = findViewById(R.id.activity_form_criacao_nota_descricao);
+        Nota nota = new Nota(titulo.getText().toString(), descricao.getText().toString());
+        return nota;
     }
 }

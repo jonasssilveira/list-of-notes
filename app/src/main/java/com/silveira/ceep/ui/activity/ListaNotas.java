@@ -28,10 +28,9 @@ public class ListaNotas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_notas);
 
-        listaNotas = findViewById(R.id.recicleView);
+        TextView addNota = getTextView();
         adapter = new NotasRecicleViewAdapter(NotaDAO.todos(), this);
         listaNotas.setAdapter(adapter);
-        TextView addNota = findViewById(R.id.lista_notas_insere_nota);
         setActivityCriarNota();
         addNota.setOnClickListener((view)->{
             Intent intent = new Intent(this, FormCriacaoNota.class);
@@ -41,6 +40,12 @@ public class ListaNotas extends AppCompatActivity {
 
     }
 
+    private TextView getTextView() {
+        listaNotas = findViewById(R.id.recicleView);
+        TextView addNota = findViewById(R.id.lista_notas_insere_nota);
+        return addNota;
+    }
+
     private void setActivityCriarNota() {
         criarNota = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -48,7 +53,8 @@ public class ListaNotas extends AppCompatActivity {
                     if(result.getResultCode() == Activity.RESULT_OK){
                         Intent nota = result.getData();
                         assert nota != null;
-                        Nota nota1 = (Nota) nota.getSerializableExtra("notaGerada");
+                        Nota nota1 = (Nota) nota.getParcelableExtra("notaGerada");
+                        System.out.println(nota1.toString());
                         adapter.addNota(nota1);
                     }
                 }
